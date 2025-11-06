@@ -19,13 +19,13 @@ Servicio de autenticación y gestión de usuarios/empresas con Spring Boot.
 Crear archivo `export` en la raíz del proyecto:
 
 ```bash
-export DB_HOST=192.168.0.104
+export DB_HOST
 export DB_PORT=5432
-export DB_NAME=auth
-export DB_TEST_NAME=testauth
-export DB_USER=founders
-export DB_PASSWORD=f0und3rs-*-
-export JWT_SECRET=founders-2025-tesis-tesos
+export DB_NAME=
+export DB_TEST_NAME=
+export DB_USER=
+export DB_PASSWORD=
+export JWT_SECRET=
 export SWAGGER_PATH=/auth/swagger-ui/index.html
 export API_DOCS_PATH=/auth/v3/api-docs
 ```
