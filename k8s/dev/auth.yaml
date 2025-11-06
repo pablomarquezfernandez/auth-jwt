@@ -1,0 +1,97 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-dev
+  namespace: founders-dev
+spec:
+  selector:
+    matchLabels:
+      app: auth-dev
+  replicas: 1
+  template:
+    metadata:
+      labels:
+         app: auth-dev
+    spec:
+      imagePullSecrets:
+         - name: ghcr-secret
+      containers:
+         - name: auth-dev
+           image: ghcr.io/tesostesis/auth-dev:latest
+           ports:
+              - containerPort: 8080
+           env:
+              - name: DB_HOST
+                valueFrom:
+                  configMapKeyRef:
+                    name:  auth-config
+                    key: DB_HOST
+              - name: DB_PORT
+                valueFrom:
+                  configMapKeyRef:
+                    name:  auth-config
+                    key: DB_PORT
+              - name: DB_NAME
+                valueFrom:
+                  configMapKeyRef:
+                    name:  auth-config
+                    key: DB_NAME
+              - name: DB_TEST_NAME
+                valueFrom:
+                  configMapKeyRef:
+                    name:  auth-config
+                    key: DB_TEST_NAME
+              - name: DB_USER
+                valueFrom:
+                  configMapKeyRef:
+                    name:  auth-config
+                    key: DB_USER  
+              - name: DB_PASSWORD
+                valueFrom:
+                  configMapKeyRef:
+                    name:  auth-config
+                    key: DB_PASSWORD  
+              - name: JWT_SECRET
+                valueFrom:
+                  configMapKeyRef:
+                    name:  auth-config
+                    key: JWT_SECRET  
+              - name: SWAGGER_PATH
+                valueFrom:
+                  configMapKeyRef:
+                    name:  auth-config
+                    key: SWAGGER_PATH  
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-dev
+  namespace: founders-dev
+spec:
+  selector:
+    app: auth-dev
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+   name: auth-dev
+   namespace: founders-dev
+   annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+spec:
+   ingressClassName: public
+   rules:
+   - host: founders.dynaco.co
+     http:
+       paths:
+       - path: /api/auth
+         pathType: Prefix
+         backend:
+           service:
+             name: auth-dev
+             port:
+               number: 8080

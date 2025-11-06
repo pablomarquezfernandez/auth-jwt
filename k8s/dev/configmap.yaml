@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: auth-config
+  namespace: founders-dev
+data:
+  DB_HOST: ""
+  DB_PORT: "5432"
+  DB_NAME: "auth"
+  DB_TEST_NAME: "testauth"
+  DB_USER: ""
+  DB_PASSWORD: ""
+  JWT_SECRET: ""
+  SWAGGER_PATH: "/auth/swagger-ui/index.html"
+  API_DOCS_PATH: "/auth/v3/api-docs"
+  GMAIL_USER: "marshandoinphotech@gmail.com"
+  GMAIL_PASSWORD: "ojfz aiyy yowq qyqk"
+
